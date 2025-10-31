@@ -63,12 +63,13 @@ function IndexPopup() {
     }
   }, [])
 
+
   return (
-    <div className="plasmo-flex plasmo-flex-col plasmo-items-center plasmo-justify-center plasmo-min-w-fit">
-      <h1 className="plasmo-font-bold plasmo-text-2xl">yExtension</h1>
+    <div className="flex flex-col items-center justify-center min-w-fit">
+      <h1 className="font-bold text-2xl">yExtension</h1>
       <span>
         An extension for all <i>my</i> needs and some things that i made for
-        fune
+        fun
       </span>
       <div className="">
         <span>Config (expand)</span>

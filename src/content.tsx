@@ -81,7 +81,7 @@ const handleClickableClick = (event: MouseEvent) => {
     return
   }
 
-  const clickable = target.closest("a, button")
+  const clickable = target.closest("a, button, [role='button'], [onclick], input[type='button'], input[type='submit'], summary")
   if (!clickable) {
     return
   }
