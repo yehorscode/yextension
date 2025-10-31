@@ -2,15 +2,22 @@ import { useEffect, useState } from "react"
 
 import { Storage } from "@plasmohq/storage"
 
-import { CLICK_STORAGE_KEY } from "~constants"
+import { CLICK_STORAGE_KEY } from "~/constants"
 
-import "~style.css"
+import "@/style.css"
+import { Button } from "./components/ui/button"
 
 const storage = new Storage({ area: "local" })
 
 function IndexPopup() {
   const [count, setCount] = useState<number>(0)
   const [config_BeepEnabled, setConfig_BeepEnabled] = useState<boolean>(true)
+
+  const handleToggleBeep = async () => {
+    const nextValue = !config_BeepEnabled
+    setConfig_BeepEnabled(nextValue)
+    await storage.set("yextension:enable-beep", nextValue)
+  }
 
   useEffect(() => {
     const fetchConfig = async () => {
@@ -74,11 +81,13 @@ function IndexPopup() {
       <div className="">
         <span>Config (expand)</span>
       </div>
+      
       <span>Count: {count}</span>
       <span>{config_BeepEnabled ? "Enabled" : "Disabled"}</span>
-      <button onClick={() => setConfig_BeepEnabled(!config_BeepEnabled)} className="">Disable beep</button>
+      <button onClick={handleToggleBeep} className="p-2 font-mono bg-gray-400">
+        {config_BeepEnabled ? "Disable" : "Enable"} beep
+      </button>
     </div>
   )
 }
-
 export default IndexPopup

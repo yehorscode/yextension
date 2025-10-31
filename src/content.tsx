@@ -2,23 +2,39 @@ import type { PlasmoCSConfig } from "plasmo"
 
 import { Storage } from "@plasmohq/storage"
 
-import { CLICK_ENABLE_BEEP, CLICK_MESSAGE_TYPE } from "~constants"
+import { CLICK_ENABLE_BEEP, CLICK_MESSAGE_TYPE } from "@/constants"
 
 export const config: PlasmoCSConfig = {
   matches: ["<all_urls>"]
 }
-var canBeep = true
+let beepEnabled = true
 const storage = new Storage({ area: "local" })
-const ready = (async () => {
-  canBeep = (await storage.get<boolean>(CLICK_ENABLE_BEEP)) ?? true
-})()
-type AudioContextConstructor = typeof AudioContext
+const syncBeepSetting = async () => {
+  beepEnabled = (await storage.get<boolean>(CLICK_ENABLE_BEEP)) ?? true
+}
 
+void syncBeepSetting()
+
+if (typeof chrome !== "undefined" && chrome.storage?.onChanged) {
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area !== "local") {
+      return
+    }
+
+    const change = changes[CLICK_ENABLE_BEEP]
+    if (!change) {
+      return
+    }
+
+    beepEnabled = (change.newValue as boolean) ?? true
+  })
+}
+type AudioContextConstructor = typeof AudioContext
 let audioContext: AudioContext | undefined
 
 function handleJumpscare() {
   if (Math.random() < 0.5) {
-    if (canBeep) {
+    if (beepEnabled) {
       playBeep(2000, "square")
     }
   }
@@ -49,7 +65,9 @@ export const playBeep = (frequency = 880, type: OscillatorType = "sine") => {
   if (ctx.state === "suspended") {
     void ctx.resume().catch(() => undefined)
   }
-
+  if (!beepEnabled) {
+    return
+  }
   const oscillator = ctx.createOscillator()
   const gain = ctx.createGain()
 
@@ -81,11 +99,13 @@ const handleClickableClick = (event: MouseEvent) => {
     return
   }
 
-  const clickable = target.closest("a, button, [role='button'], [onclick], input[type='button'], input[type='submit'], summary")
+  const clickable = target.closest(
+    "a, button, [role='button'], [onclick], input[type='button'], input[type='submit'], summary"
+  )
   if (!clickable) {
     return
   }
-  if (canBeep) {
+  if (beepEnabled) {
     playBeep()
   }
 
