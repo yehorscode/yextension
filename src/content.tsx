@@ -1,13 +1,28 @@
 import type { PlasmoCSConfig } from "plasmo"
-import { CLICK_MESSAGE_TYPE } from "~constants"
+
+import { Storage } from "@plasmohq/storage"
+
+import { CLICK_ENABLE_BEEP, CLICK_MESSAGE_TYPE } from "~constants"
 
 export const config: PlasmoCSConfig = {
   matches: ["<all_urls>"]
 }
-
+var canBeep = true
+const storage = new Storage({ area: "local" })
+const ready = (async () => {
+  canBeep = (await storage.get<boolean>(CLICK_ENABLE_BEEP)) ?? true
+})()
 type AudioContextConstructor = typeof AudioContext
 
 let audioContext: AudioContext | undefined
+
+function handleJumpscare() {
+  if (Math.random() < 0.5) {
+    if (canBeep) {
+      playBeep(2000, "square")
+    }
+  }
+}
 
 const getAudioContext = () => {
   if (typeof window === "undefined") {
@@ -19,15 +34,13 @@ const getAudioContext = () => {
   if (!ContextCtor) {
     return undefined
   }
-
   if (!audioContext) {
     audioContext = new ContextCtor()
   }
-
   return audioContext
 }
 
-const playBeep = () => {
+export const playBeep = (frequency = 880, type: OscillatorType = "sine") => {
   const ctx = getAudioContext()
   if (!ctx) {
     return
@@ -40,11 +53,11 @@ const playBeep = () => {
   const oscillator = ctx.createOscillator()
   const gain = ctx.createGain()
 
-  oscillator.type = "sine"
-  oscillator.frequency.value = 880
+  oscillator.type = type
+  oscillator.frequency.value = frequency
 
   gain.gain.setValueAtTime(0.0001, ctx.currentTime)
-  gain.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + 0.02)
+  gain.gain.exponentialRampToValueAtTime(0.15, ctx.currentTime + 0.02)
   gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.18)
 
   oscillator.connect(gain)
@@ -57,14 +70,13 @@ const playBeep = () => {
     oscillator.disconnect()
     gain.disconnect()
   }
+  handleJumpscare()
 }
-
 const handleClickableClick = (event: MouseEvent) => {
   const target = event.target as HTMLElement | null
   if (!target) {
     return
   }
-
   if (!event.isTrusted || event.button !== 0) {
     return
   }
@@ -73,8 +85,9 @@ const handleClickableClick = (event: MouseEvent) => {
   if (!clickable) {
     return
   }
-
-  playBeep()
+  if (canBeep) {
+    playBeep()
+  }
 
   if (typeof chrome === "undefined" || !chrome.runtime?.sendMessage) {
     return
@@ -96,7 +109,10 @@ declare global {
   }
 }
 
-if (typeof window !== "undefined" && !window.yextensionClickListenerRegistered) {
+if (
+  typeof window !== "undefined" &&
+  !window.yextensionClickListenerRegistered
+) {
   window.yextensionClickListenerRegistered = true
   registerClickTracking()
 }
