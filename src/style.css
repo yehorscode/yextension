@@ -74,22 +74,26 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-
 #shadow-container {
   all: initial;
   box-sizing: border-box;
 }
 
-html, body, #__plasmo {
+html,
+body,
+#__plasmo {
   margin: 0;
   padding: 5px;
 }
 
-body, #__plasmo {
+body,
+#__plasmo {
   display: inline-block;
 }
 
-html, body, #__plasmo {
+html,
+body,
+#__plasmo {
   width: max-content;
   height: max-content;
   overflow: hidden;

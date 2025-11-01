@@ -1,5 +1,6 @@
-import { Storage } from "@plasmohq/storage"
 import { CLICK_MESSAGE_TYPE, CLICK_STORAGE_KEY } from "@/constants"
+
+import { Storage } from "@plasmohq/storage"
 
 const storage = new Storage({ area: "local" })
 
