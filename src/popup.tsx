@@ -3,21 +3,17 @@ import { useEffect, useState } from "react"
 import { Storage } from "@plasmohq/storage"
 
 import {
-  CLICK_ENABLE_BEEP,
   CLICK_STORAGE_KEY,
-  ENABLE_JUMPSCARES
 } from "~/constants"
 
 import "@/style.css"
 
-import { config } from "process"
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger
 } from "@/components/ui/collapsible"
 
-import { Button } from "./components/ui/button"
 
 const storage = new Storage({ area: "local" })
 

@@ -1,6 +1,5 @@
 import { CLICK_ENABLE_BEEP, CLICK_MESSAGE_TYPE } from "@/constants"
 import type { PlasmoCSConfig } from "plasmo"
-import { useEffect, useState } from "react"
 
 import { Storage } from "@plasmohq/storage"
 
