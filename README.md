@@ -13,6 +13,10 @@ What it can do:
 - make buttons dissapear for a second
 - replace images to "spooky" ones
 
+Very long demo (when i click on buttons it is to trigger a jumpscare cuz it takes a 1/10 chance)
+/home/yehors/Wideo/Nagrania ekranu/simplescreenrecorder-2025-11-02_15.08.20.mp4
+
+
 ### Tech Stack
 
 Extension framework Plasmo, TypeScript, JavaScript, Tailwind and Prettier (4 formatting yk)
