@@ -32,3 +32,11 @@ Note: all contents of the journal were human made (me)
 
 ### Installation locally
 So, you dont believe in the demo huh? You want to install locally?
+Heres how:
+1. Open you chromium based browser
+2. Open your extension page with chrome://extensions
+3. Click enable developer mode toggle
+4. Download the zip file from releases
+5. Unpack the zip file
+6. Select the Load Unpacked button inside your chrome://extensions and click ok
+Extension should load iself now! good luck
