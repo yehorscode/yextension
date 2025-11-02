@@ -14,8 +14,7 @@ What it can do:
 - replace images to "spooky" ones
 
 Very long demo (when i click on buttons it is to trigger a jumpscare cuz it takes a 1/10 chance)
-/home/yehors/Wideo/Nagrania ekranu/simplescreenrecorder-2025-11-02_15.08.20.mp4
-
+https://youtu.be/JtEfAWotnfo
 
 ### Tech Stack
 
