@@ -10,6 +10,7 @@ import {
 
 import "@/style.css"
 
+import { config } from "process"
 import {
   Collapsible,
   CollapsibleContent,
@@ -17,7 +18,6 @@ import {
 } from "@/components/ui/collapsible"
 
 import { Button } from "./components/ui/button"
-import { config } from "process"
 
 const storage = new Storage({ area: "local" })
 
@@ -26,7 +26,10 @@ function IndexPopup() {
   const [config_BeepEnabled, setConfig_BeepEnabled] = useState<boolean>(true)
   const [config_JumpScaresEnabled, setConfig_JumpScaresEnabled] =
     useState<boolean>(true)
-
+  const [config_ImageReplaceEnabled, setConfig_ImageReplaceEnabled] =
+    useState<boolean>(false)
+  const [config_ButtonHideEnabled, setConfig_ButtonHideEnabled] =
+    useState<boolean>(false)
   const handleToggleBeep = async () => {
     const nextValue = !config_BeepEnabled
     setConfig_BeepEnabled(nextValue)
@@ -37,12 +40,30 @@ function IndexPopup() {
     setConfig_JumpScaresEnabled(nextValue)
     await storage.set("yextension:enable-jumpscare", nextValue)
   }
+  const handleToggleImageReplace = async () => {
+    const nextValue = !config_ImageReplaceEnabled
+    setConfig_ImageReplaceEnabled(nextValue)
+    await storage.set("yextension:enable-image-replace", nextValue)
+  }
+  const handleToggleButtonHide = async () => {
+    const nextValue = !config_ButtonHideEnabled
+    setConfig_ButtonHideEnabled(nextValue)
+    await storage.set("yextension:enable-button-hide", nextValue)
+  }
   useEffect(() => {
     const fetchConfig = async () => {
       const a_value = await storage.get<boolean>("yextension:enable-beep")
       setConfig_BeepEnabled(a_value ?? true)
       const b_value = await storage.get<boolean>("yextension:enable-jumpscare")
       setConfig_JumpScaresEnabled(b_value ?? true)
+      const c_value = await storage.get<boolean>(
+        "yextension:enable-image-replace"
+      )
+      setConfig_ImageReplaceEnabled(c_value ?? false)
+      const d_value = await storage.get<boolean>(
+        "yextension:enable-button-hide"
+      )
+      setConfig_ButtonHideEnabled(d_value ?? false)
     }
 
     fetchConfig()
@@ -118,7 +139,7 @@ function IndexPopup() {
               {config_JumpScaresEnabled
                 ? "Jumpscares Enabled"
                 : "Jumpscares Disabled"}
-            </span>  
+            </span>
             <button
               className="px-2 font-mono bg-gray-300"
               onClick={handleToggleJumpscares}
@@ -127,8 +148,42 @@ function IndexPopup() {
                   ? "lightcoral"
                   : "lime"
               }}>
-                {config_JumpScaresEnabled ? "Disable" : "Enable"} jumpscares
-              </button>
+              {config_JumpScaresEnabled ? "Disable" : "Enable"} jumpscares
+            </button>
+          </div>
+          <div className="flex flex-row items-center justify-center gap-4 bg-gray-100 px-2">
+            <span>
+              {config_ImageReplaceEnabled
+                ? "Image Replace Enabled"
+                : "Image Replace Disabled"}
+            </span>
+            <button
+              className="px-2 font-mono bg-gray-300"
+              onClick={handleToggleImageReplace}
+              style={{
+                backgroundColor: config_ImageReplaceEnabled
+                  ? "lightcoral"
+                  : "lime"
+              }}>
+              {config_ImageReplaceEnabled ? "Disable" : "Enable"} image replace
+            </button>
+          </div>
+          <div className="flex flex-row items-center justify-center gap-4 bg-gray-100 px-2 mb-2">
+            <span>
+              {config_ButtonHideEnabled
+                ? "Button Hide Enabled"
+                : "Button Hide Disabled"}
+            </span>
+            <button
+              className="px-2 font-mono bg-gray-300"
+              onClick={handleToggleButtonHide}
+              style={{
+                backgroundColor: config_ButtonHideEnabled
+                  ? "lightcoral"
+                  : "lime"
+              }}>
+              {config_ButtonHideEnabled ? "Disable" : "Enable"} button hide
+            </button>
           </div>
         </CollapsibleContent>
       </Collapsible>

@@ -41,7 +41,10 @@
     "web_accessible_resources": [
       {
         "resources": [
-          "assets/video/*.webm"
+          "assets/video/*.webm",
+          "assets/*.png",
+          "assets/video/*.mp4",
+          "assets/*.jpg"
         ],
         "matches": [
           "<all_urls>"
