@@ -2,9 +2,7 @@ import { useEffect, useState } from "react"
 
 import { Storage } from "@plasmohq/storage"
 
-import {
-  CLICK_STORAGE_KEY,
-} from "~/constants"
+import { CLICK_STORAGE_KEY } from "~/constants"
 
 import "@/style.css"
 
@@ -13,7 +11,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger
 } from "@/components/ui/collapsible"
-
 
 const storage = new Storage({ area: "local" })
 
@@ -114,7 +111,7 @@ function IndexPopup() {
         An extension for all <i>my</i> needs and some things that i made for fun
       </span>
 
-      <Collapsible className="min-w-full" open={true}>
+      <Collapsible className="min-w-full">
         <CollapsibleTrigger className="bg-gray-300 min-w-full rounded-sm">
           <span>Config (expand)</span>
         </CollapsibleTrigger>
